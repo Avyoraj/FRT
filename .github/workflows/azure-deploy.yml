@@ -7,28 +7,31 @@ on:
 
 env:
   NODE_VERSION: '20.x'
+  AZURE_WEBAPP_NAME: 'letscook'  # Your web app name
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-    - name: Set up Node.js ${{ env.NODE_VERSION }}
+    - name: Use Node.js ${{ env.NODE_VERSION }}
       uses: actions/setup-node@v3
       with:
         node-version: ${{ env.NODE_VERSION }}
+        check-latest: true  # This ensures it uses the latest 20.x version
 
     - name: Install dependencies
       run: npm ci
 
-    - name: Build project  # Add this step if you have a build process
+    - name: Build project
       run: npm run build
 
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: .
