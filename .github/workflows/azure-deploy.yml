@@ -6,7 +6,6 @@ on:
       - main
 
 env:
-  NODE_VERSION: '20.x'
   AZURE_WEBAPP_NAME: 'letscook'  # Your web app name
 
 jobs:
@@ -17,11 +16,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v2  # Updated to setup-node@v2
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
       with:
-        node-version: ${{ env.NODE_VERSION }}
-        check-latest: true  # This ensures it uses the latest 20.x version
+        node-version: '14.x'  # GitHub Actions uses node16 by default
 
     - name: Install dependencies
       run: npm ci
