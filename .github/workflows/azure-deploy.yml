@@ -32,7 +32,7 @@ jobs:
         check-latest: true  # This ensures it uses the latest patch version of Node.js 20
 
     - name: Install dependencies
-      run: npm install  # Use npm install instead of npm ci
+      run: npm install
 
     - name: Build project (verbose)
       run: |
