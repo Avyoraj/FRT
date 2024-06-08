@@ -3,7 +3,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/', (req, res) => {
-  res.send('Recipe Recommender is coming soon!');
+  res.send('Hello, Azure Web App!');
 });
 
 app.listen(port, () => {
