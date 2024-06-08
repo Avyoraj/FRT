@@ -1,9 +1,10 @@
-name: Deploy Node.js app to Azure Web App
+name: Azure Deploy
 
 on:
   push:
     branches:
-      - main  # Change this to the branch you want to trigger the deployment
+      - main
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -11,24 +12,23 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20'  # Use Node.js version 20
+          node-version: '20.x'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build the project
-        run: npm run build
+      - name: Build
+        run: npm run build --if-present
 
-      - name: Deploy to Azure Web App using Web Deploy
-        uses: azure/webapps-deploy@v2
+      - name: Deploy to Azure Web App
+        uses: Azure/webapps-deploy@v2
         with:
           app-name: 'letscook'  # Replace with your Azure Web App name
-          slot-name: 'production'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-          # Use the Web Deploy publish profile
-          publish-profile-payload: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          slot-name: 'production'  # Replace with your deployment slot name if applicable
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}  # Replace with your Azure publish profile secret
+          package: .
